@@ -84,10 +84,13 @@ Car.prototype.fill = function(gallons){
   }
 Car.prototype.drive = function(distance){
    this.odometer = distance + this.odometer
- if (this.tank === 0){
-   return `I ran out of fuel at ${this.odometer} miles!`
- }
-   return this.odometer
+   if(this.milesPerGallon * this.tank < distance){
+    this.odometer =  this.milesPerGallon * this.tank
+    this.tank = 0
+    return `I ran out of fuel at ${this.odometer} miles!`
+  }else{
+    this.tank = this.tank - (distance/this.milesPerGallon)
+  }
 }
 
 /*
@@ -97,7 +100,7 @@ Car.prototype.drive = function(distance){
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-Baby.prototype = Object.create(Person.prototype);
+Object.setPrototypeOf(Baby.prototype,Person.prototype);
 function Baby(name, age, favoriteToy) {
 this.name = name;
 this.age = age;
